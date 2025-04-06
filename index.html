@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neocis Yomi® Accuracy Challenge</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Application -->
+    <div class="app-container" id="app-container">
+        <!-- Header -->
+        <header>
+            <img src="assets/neocis-logo.svg" alt="Neocis Logo" class="logo">
+            <h1 class="title">Yomi® Accuracy Challenge: Virtual Implant Showdown</h1>
+        </header>
+
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcome-screen">
+            <img src="assets/yomi-arm.svg" alt="Yomi Robotic Arm" class="yomi-pulse" id="yomi-pulse">
+            <h1>Got the hands for this?</h1>
+            <p>Test freehand, static guides, and Yomi's robotic edge against real data. See how your precision stacks up against Dr. Jay Neugarten's clinical findings.</p>
+            <button class="btn btn-primary" id="jump-in-btn">Jump In</button>
+        </div>
+
+        <!-- Method Selection -->
+        <div class="method-selection hidden" id="method-selection">
+            <div class="container">
+                <h2>Choose Your Method</h2>
+                <div class="method-cards">
+                    <!-- Freehand Method -->
+                    <div class="method-card freehand" id="freehand-card">
+                        <img src="assets/freehand-icon.svg" alt="Freehand Method" class="method-icon" id="freehand-icon">
+                        <h3>Freehand</h3>
+                        <div class="method-stats">7.03° | 1.1mm</div>
+                        <p>Traditional approach with no guidance. Pure skill and steady hands required.</p>
+                        <div class="taunt">You're on your own, champ.</div>
+                    </div>
+                    
+                    <!-- Static Guided Method -->
+                    <div class="method-card static" id="static-card">
+                        <img src="assets/static-icon.svg" alt="Static Guided Method" class="method-icon" id="static-icon">
+                        <h3>Static Guided</h3>
+                        <div class="method-stats">3.9° | 1.1mm</div>
+                        <p>Uses a physical guide to improve accuracy, but still requires manual control.</p>
+                        <div class="taunt">Guide's trying. You're still the weak link.</div>
+                    </div>
+                    
+                    <!-- Yomi Robotic-Assisted Method -->
+                    <div class="method-card yomi" id="yomi-card">
+                        <img src="assets/yomi-icon.svg" alt="Yomi Robotic-Assisted Method" class="method-icon" id="yomi-icon">
+                        <h3>Yomi Robotic-Assisted</h3>
+                        <div class="method-stats">1.42° | 0.14mm</div>
+                        <p>Cutting-edge robotic guidance for unmatched precision and control.</p>
+                        <div class="taunt">Robot's got your back.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulation Interface -->
+        <div class="simulation-interface hidden" id="simulation-interface">
+            <div class="container">
+                <div class="simulation-header">
+                    <h2 class="simulation-title" id="simulation-method-title">Method: Freehand</h2>
+                    <div class="view-controls">
+                        <button class="view-btn active" id="buccal-view">Buccal</button>
+                        <button class="view-btn" id="lingual-view">Lingual</button>
+                        <button class="view-btn" id="occlusal-view">Occlusal</button>
+                        <button class="view-btn" id="free-view">Free-Angle</button>
+                    </div>
+                </div>
+                
+                <div class="simulation-container">
+                    <div class="simulation-view">
+                        <canvas id="simulation-canvas"></canvas>
+                        <div class="crosshair" id="crosshair"></div>
+                    </div>
+                    
+                    <div class="feedback-panel">
+                        <div>
+                            <div class="feedback-item">
+                                <div class="feedback-label">
+                                    <span>Angle</span>
+                                    <span id="angle-value">0.00°</span>
+                                </div>
+                                <div class="meter">
+                                    <div class="meter-fill" id="angle-meter"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="feedback-item">
+                                <div class="feedback-label">
+                                    <span>Depth</span>
+                                    <span id="depth-value">0.00mm</span>
+                                </div>
+                                <div class="meter">
+                                    <div class="meter-fill" id="depth-meter"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="feedback-item">
+                                <p>Case: Fix #19 for Mike, 50, steak enthusiast.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <button class="btn btn-primary" id="drill-btn">Drill It</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen hidden" id="results-screen">
+            <div class="container">
+                <h2 class="results-title">Implant Placement Results</h2>
+                
+                <div class="results-container">
+                    <div class="results-view">
+                        <canvas id="results-canvas"></canvas>
+                    </div>
+                    
+                    <div class="results-data">
+                        <div class="your-score" id="your-score">
+                            Freehand: 5.67° | 0.89mm
+                        </div>
+                        
+                        <div class="benchmark-container">
+                            <h3 class="benchmark-title">Angle Deviation Comparison</h3>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Freehand</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar freehand" style="width: 100%;">
+                                        <span class="benchmark-value">7.03°</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Static Guided</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar static" style="width: 55%;">
+                                        <span class="benchmark-value">3.9°</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Yomi</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar yomi" style="width: 20%;">
+                                        <span class="benchmark-value">1.42°</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">You</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar you" id="your-angle-bar" style="width: 80%;">
+                                        <span class="benchmark-value" id="your-angle-value">5.67°</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="benchmark-container">
+                            <h3 class="benchmark-title">Depth Deviation Comparison</h3>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Freehand</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar freehand" style="width: 100%;">
+                                        <span class="benchmark-value">1.1mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Static Guided</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar static" style="width: 100%;">
+                                        <span class="benchmark-value">1.1mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Yomi</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar yomi" style="width: 13%;">
+                                        <span class="benchmark-value">0.14mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">You</div>
+                                <div class="benchmark-bar-container">
+                                    <div class="benchmark-bar you" id="your-depth-bar" style="width: 80%;">
+                                        <span class="benchmark-value" id="your-depth-value">0.89mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="score-container">
+                            <h3 class="score-title">Your Score</h3>
+                            <div class="score-value" id="score-value">55</div>
+                            <div class="score-message" id="score-message">Not bad, but Yomi would have done better.</div>
+                        </div>
+                        
+                        <div class="neugarten-note">
+                            <p>Dr. Neugarten's study shows Yomi reduces error by 80% compared to freehand placement.</p>
+                        </div>
+                        
+                        <div class="results-actions">
+                            <button class="btn btn-secondary" id="switch-method-btn">Switch Method</button>
+                            <button class="btn btn-primary" id="learn-more-btn">Learn More About Yomi</button>
+                            <button class="btn btn-outline" id="try-again-btn">Try Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load JavaScript libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    
+    <!-- Load application scripts -->
+    <script src="js/simulation.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

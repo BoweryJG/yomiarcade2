@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#F28C38">
+    <!-- Base -->
+    <rect x="120" y="250" width="60" height="30" rx="5" />
+    
+    <!-- Main arm -->
+    <rect x="140" y="150" width="20" height="100" />
+    
+    <!-- Arm joint -->
+    <circle cx="150" cy="150" r="25" />
+    
+    <!-- Upper arm -->
+    <rect x="145" y="50" width="10" height="100" transform="rotate(-15, 150, 150)" />
+    
+    <!-- Head/Tool -->
+    <rect x="135" y="30" width="30" height="40" rx="5" transform="rotate(-15, 150, 150)" />
+    
+    <!-- Control panel -->
+    <rect x="80" y="200" width="40" height="50" rx="5" />
+    <circle cx="100" cy="215" r="5" fill="white" />
+    <circle cx="100" cy="235" r="5" fill="white" />
+    
+    <!-- Decorative elements -->
+    <rect x="145" y="180" width="10" height="5" />
+    <rect x="145" y="190" width="10" height="5" />
+    <rect x="145" y="200" width="10" height="5" />
+    
+    <!-- Glow effect -->
+    <circle cx="150" cy="150" r="20" fill="white" opacity="0.3" />
+  </g>
+</svg>
