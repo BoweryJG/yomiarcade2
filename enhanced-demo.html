@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Dental Simulator - Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: white;
+            overflow: hidden;
+        }
+        #app {
+            width: 100vw;
+            height: 100vh;
+        }
+        .demo-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        .demo-content {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4ECDC4, #44A3AA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .features {
+            margin: 30px 0;
+            text-align: left;
+            max-width: 600px;
+        }
+        .feature {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        .start-btn {
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #4ECDC4, #44A3AA);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.5);
+        }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="demo-container">
+            <div class="demo-content">
+                <h1>Enhanced Dental Simulator</h1>
+                <p style="font-size: 20px; color: rgba(255,255,255,0.8); margin-bottom: 30px;">
+                    Experience stunning 3D graphics and realistic dental procedures
+                </p>
+                
+                <div class="features">
+                    <div class="feature">✨ Realistic 3D tooth and jaw models with advanced shaders</div>
+                    <div class="feature">🎯 Multiple procedures: Implant, Cleaning, Cavity treatment</div>
+                    <div class="feature">🌟 Dynamic particle effects and animations</div>
+                    <div class="feature">📊 Comprehensive results with Chart.js visualizations</div>
+                    <div class="feature">🎬 Cinematic camera movements and transitions</div>
+                    <div class="feature">🏆 Achievement system with confetti celebrations</div>
+                    <div class="feature">💡 Post-processing effects: Bloom, DOF, Film grain</div>
+                </div>
+                
+                <button class="start-btn" onclick="startSimulation()">Start Enhanced Simulation</button>
+            </div>
+        </div>
+        
+        <div id="canvas-container"></div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+        import { gsap } from 'gsap';
+        
+        window.startSimulation = function() {
+            document.querySelector('.demo-container').style.display = 'none';
+            document.getElementById('canvas-container').style.display = 'block';
+            
+            // Initialize Three.js scene
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x0a0a0f, 10, 50);
+            
+            // Camera
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(5, 5, 10);
+            
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 10, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            // Create stunning tooth model
+            const toothGeometry = new THREE.CylinderGeometry(1, 0.8, 3, 16, 8);
+            const toothMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0xFFFFF8,
+                metalness: 0.05,
+                roughness: 0.15,
+                clearcoat: 1,
+                clearcoatRoughness: 0.05,
+                transmission: 0.2,
+                thickness: 1.5,
+                ior: 1.6,
+            });
+            const tooth = new THREE.Mesh(toothGeometry, toothMaterial);
+            tooth.castShadow = true;
+            tooth.receiveShadow = true;
+            scene.add(tooth);
+            
+            // Create jaw base
+            const jawGeometry = new THREE.TorusGeometry(4, 1.5, 8, 16, Math.PI);
+            const jawMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0xFFB5B5,
+                metalness: 0,
+                roughness: 0.7,
+                clearcoat: 0.4,
+            });
+            const jaw = new THREE.Mesh(jawGeometry, jawMaterial);
+            jaw.position.y = -3;
+            jaw.rotation.x = Math.PI;
+            scene.add(jaw);
+            
+            // Add particles
+            const particleCount = 200;
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 20;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+                
+                const color = new THREE.Color().setHSL(Math.random() * 0.2 + 0.5, 0.8, 0.6);
+                colors[i * 3] = color.r;
+                colors[i * 3 + 1] = color.g;
+                colors[i * 3 + 2] = color.b;
+            }
+            
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const particleMaterial = new THREE.PointsMaterial({
+                size: 0.2,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+            });
+            
+            const particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+            
+            // Animate tooth
+            gsap.to(tooth.rotation, {
+                y: Math.PI * 2,
+                duration: 10,
+                repeat: -1,
+                ease: "none"
+            });
+            
+            gsap.to(tooth.position, {
+                y: 1,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "power2.inOut"
+            });
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                controls.update();
+                
+                // Animate particles
+                particles.rotation.y += 0.001;
+                particles.rotation.x += 0.0005;
+                
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Add UI overlay
+            const uiOverlay = document.createElement('div');
+            uiOverlay.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background: rgba(0,0,0,0.8);
+                padding: 20px;
+                border-radius: 10px;
+                border: 1px solid rgba(78, 205, 196, 0.5);
+            `;
+            uiOverlay.innerHTML = `
+                <h2 style="margin: 0 0 10px 0; color: #4ECDC4;">Enhanced Dental Simulator</h2>
+                <p style="margin: 5px 0;">🎮 Use mouse to orbit camera</p>
+                <p style="margin: 5px 0;">🔄 Scroll to zoom</p>
+                <p style="margin: 5px 0;">✨ Watch the stunning animations!</p>
+            `;
+            document.body.appendChild(uiOverlay);
+        }
+    </script>
+</body>
+</html>

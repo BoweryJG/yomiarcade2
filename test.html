@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+</head>
+<body>
+    <div id="test-root"></div>
+    <script type="module">
+        import React from 'react';
+        import ReactDOM from 'react-dom/client';
+        
+        function TestApp() {
+            return React.createElement('div', { style: { padding: '20px', color: 'white', background: '#333' } }, 
+                'React is working! Enhanced simulator is loading...'
+            );
+        }
+        
+        const root = ReactDOM.createRoot(document.getElementById('test-root'));
+        root.render(React.createElement(TestApp));
+        
+        // Now load the real app
+        setTimeout(() => {
+            window.location.href = '/enhanced.html';
+        }, 2000);
+    </script>
+</body>
+</html>

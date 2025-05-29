@@ -1,0 +1,328 @@
+.simulation-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0f;
+}
+
+.menu-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.menu-content {
+  text-align: center;
+  max-width: 1000px;
+  padding: 48px;
+}
+
+.menu-title {
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #4ECDC4, #44A3AA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 20px rgba(78, 205, 196, 0.5)); }
+  to { filter: drop-shadow(0 0 30px rgba(78, 205, 196, 0.8)); }
+}
+
+.menu-subtitle {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 48px;
+}
+
+.procedure-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.procedure-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.procedure-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, transparent, rgba(78, 205, 196, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.procedure-card:hover::before {
+  opacity: 1;
+}
+
+.procedure-card.selected {
+  border-color: #4ECDC4;
+  background: rgba(78, 205, 196, 0.1);
+}
+
+.procedure-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.procedure-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.procedure-card h3 {
+  color: white;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.procedure-card p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+.difficulty-selector {
+  margin-bottom: 48px;
+}
+
+.difficulty-selector h4 {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.difficulty-btn {
+  padding: 12px 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.difficulty-btn.active {
+  background: rgba(78, 205, 196, 0.2);
+  border-color: #4ECDC4;
+  color: #4ECDC4;
+}
+
+.start-button {
+  padding: 16px 48px;
+  background: linear-gradient(135deg, #4ECDC4, #44A3AA);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(78, 205, 196, 0.3);
+}
+
+.start-button:hover {
+  box-shadow: 0 6px 30px rgba(78, 205, 196, 0.5);
+  transform: translateY(-2px);
+}
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.hud > * {
+  pointer-events: auto;
+}
+
+.score-display {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px 24px;
+  text-align: center;
+}
+
+.score-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.score-value {
+  color: #4ECDC4;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.procedure-info {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px 32px;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.procedure-info h3 {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.procedure-info p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+.exit-button {
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: #FF6B6B;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exit-button:hover {
+  background: rgba(255, 107, 107, 0.3);
+  border-color: #FF6B6B;
+}
+
+/* Loading states */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #4ECDC4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Tooltips */
+.tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.tooltip.visible {
+  opacity: 1;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .menu-title {
+    font-size: 32px;
+  }
+  
+  .procedure-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .difficulty-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .difficulty-btn {
+    width: 100%;
+  }
+  
+  .hud {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .procedure-info {
+    position: relative;
+    left: 0;
+    transform: none;
+  }
+}
+
+/* Performance optimization */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
