@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dental Simulator</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a0f);
+        
+        // Camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+        
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        
+        // Light
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040));
+        
+        // Tooth
+        const toothGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 16);
+        const toothMaterial = new THREE.MeshPhongMaterial({ 
+            color: 0xFFFFF8,
+            shininess: 100,
+            specular: 0x222222
+        });
+        const tooth = new THREE.Mesh(toothGeometry, toothMaterial);
+        scene.add(tooth);
+        
+        // Jaw
+        const jawGeometry = new THREE.TorusGeometry(2, 0.5, 8, 16, Math.PI);
+        const jawMaterial = new THREE.MeshPhongMaterial({ color: 0xFFB5B5 });
+        const jaw = new THREE.Mesh(jawGeometry, jawMaterial);
+        jaw.position.y = -2;
+        jaw.rotation.x = Math.PI;
+        scene.add(jaw);
+        
+        // Mouse control
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        // Animate
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            tooth.rotation.y += 0.01;
+            camera.position.x = mouseX * 3;
+            camera.position.y = mouseY * 3;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
